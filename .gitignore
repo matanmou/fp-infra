@@ -1,66 +1,135 @@
 # ===========================
-# Dependencies
-# ===========================
-node_modules/
-.pnp
-.pnp.js
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
-
-# ===========================
-# Build output
-# ===========================
-/dist
-/build
-/out
-*.tsbuildinfo
-
-# ===========================
-# Logs
-# ===========================
-logs/
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-# ===========================
-# Environment variables
+# Secrets & credentials (NEVER commit)
 # ===========================
 .env
 .env.*
 !.env.example
 !.env.sample
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+id_rsa*
+id_ed25519*
+*.kubeconfig
+kubeconfig*
+secrets/
+*.secret
+*.secrets
+credentials.json
+service-account*.json
+.vault-token
+.vault_pass*
+vault-password*
 
 # ===========================
-# Tests & coverage
+# Terraform / OpenTofu
 # ===========================
-/coverage
-/.nyc_output
-junit.xml
-test-results/
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+!example.tfvars
+!*.example.tfvars
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+# Lock file SHOULD be committed:
+!.terraform.lock.hcl
+
+# ===========================
+# Terragrunt
+# ===========================
+.terragrunt-cache/
+
+# ===========================
+# Ansible
+# ===========================
+*.retry
+.ansible/
+ansible.log
+fact_cache/
+
+# ===========================
+# Kubernetes / Helm
+# ===========================
+charts/*.tgz
+**/charts/*.tgz
+.helm/
+helm-secrets*
+*.dec.yaml
+*.dec.yml
+
+# ===========================
+# Docker
+# ===========================
+docker-compose.override.yml
+docker-compose.override.yaml
+.docker/
+# Local volumes / persistent data
+data/
+volumes/
+*_data/
+
+# ===========================
+# Vagrant / Packer
+# ===========================
+.vagrant/
+packer_cache/
+output-*/
+*.box
+
+# ===========================
+# Cloud CLIs
+# ===========================
+.aws/
+.azure/
+.gcloud/
+.pulumi/
+
+# ===========================
+# Logs & temp
+# ===========================
+logs/
+*.log
+tmp/
+temp/
+.tmp/
+*.bak
+*.backup
+*.swp
+*~
+
+# ===========================
+# Python (scripts / venv)
+# ===========================
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# ===========================
+# Node (if scripts use it)
+# ===========================
+node_modules/
 
 # ===========================
 # IDEs & editors
 # ===========================
 .idea/
 *.iml
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
 .vscode/*
 !.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
 !.vscode/extensions.json
 
 # ===========================
@@ -68,44 +137,4 @@ test-results/
 # ===========================
 .DS_Store
 Thumbs.db
-ehthumbs.db
 Desktop.ini
-
-# ===========================
-# Temp & cache
-# ===========================
-.temp/
-.tmp/
-tmp/
-temp/
-.cache/
-.eslintcache
-.stylelintcache
-.npm/
-.webpack/
-
-# ===========================
-# Runtime data
-# ===========================
-pids
-*.pid
-*.seed
-*.pid.lock
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
-# ===========================
-# Database (local / dev)
-# ===========================
-*.sqlite
-*.sqlite3
-*.db
-
-# ===========================
-# Uploads (if stored locally)
-# ===========================
-/uploads
-
-# ===========================
-# Diagnostic reports
-# ===========================
-.diagnostic-reports/
