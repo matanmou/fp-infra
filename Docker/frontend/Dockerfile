@@ -4,7 +4,6 @@ FROM node:24-alpine AS build
 
 WORKDIR /app
 
-# Install dependencies first (cached unless package files change)
 RUN apk add --no-cache git
 RUN git clone --filter=blob:none --no-checkout --depth 1 \
     https://github.com/matanmou/fp-app.git . && \

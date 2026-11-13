@@ -1,39 +1,30 @@
-# ---------- Stage 1: build the NestJS app ----------
-FROM node:18-alpine AS build
+# ---------- Stage 1: build ----------
+FROM node:22-alpine AS build
 
 WORKDIR /app
+RUN apk add --no-cache git
+RUN git clone --filter=blob:none --no-checkout --depth 1 \
+      https://github.com/matanmou/fp-app.git . && \
+    git sparse-checkout set backend && \
+    git checkout
 
-# Install all dependencies (including dev, needed for nest build)
-COPY package.json package-lock.json ./
-RUN npm ci
+WORKDIR /app/backend
+# install everything, compile, then drop devDependencies
+RUN npm ci && \
+    npm run build && \
+    npm prune --omit=dev
 
-# Copy the source and compile TypeScript -> dist/
-COPY . .
-RUN npm run build
+# ---------- Stage 2: runtime ----------
+FROM node:22-alpine
 
-# ---------- Stage 2: production image ----------
-FROM node:18-alpine
-
-WORKDIR /app
 ENV NODE_ENV=production
+WORKDIR /app
 
-# Production dependencies only
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev && npm cache clean --force
+COPY --from=build --chown=node:node /app/backend/package*.json ./
+COPY --from=build --chown=node:node /app/backend/node_modules ./node_modules
+COPY --from=build --chown=node:node /app/backend/dist ./dist
 
-# Compiled code from stage 1
-COPY --from=build /app/dist ./dist
-
-# Database connection (override with -e or docker-compose)
-ENV PORT=3000 \
-    DB_HOST=localhost \
-    DB_PORT=3306 \
-    DB_NAME=ipflDB \
-    DB_USER=root
-
+USER node
 EXPOSE 3000
 
-# Run as the non-root "node" user that ships with the image
-USER node
-
-CMD ["node", "dist/src/main.js"]
+CMD ["node", "dist/src/main"]
