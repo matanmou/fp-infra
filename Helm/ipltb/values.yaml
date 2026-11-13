@@ -19,3 +19,7 @@ frontend:
   image: matanmo93/fp-frontend:1.1
   port: 80
   backendUrl: http://ipltb-backend:3000
+jenkins:
+  enabled: true
+  serviceAccount: jenkins-deployer
+  namespace: jenkins
