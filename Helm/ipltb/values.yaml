@@ -3,3 +3,19 @@ namespace: ipltb-space
 image:
   name: matanmo93/ipltb
   tag: latest
+mysql:
+  image: mysql:8.0
+  rootPassword: ""
+  password: ""
+  database: ipldb
+  user: matanmo
+  storage: 1Gi
+backend:
+  image: matanmo93/fp-backend:1.1
+  port: 3000
+  dbHost: ipldb-mysql
+  healthPath: "" 
+frontend:
+  image: matanmo93/fp-frontend:1.1
+  port: 80
+  backendUrl: http://ipltb-backend:3000

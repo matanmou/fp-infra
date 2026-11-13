@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ipltb-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ipltb-backend
+  template:
+    metadata:
+      labels:
+        app: ipltb-backend
+    spec:
+      containers:
+        - name: backend
+          image: {{ .Values.backend.image }}
+          ports:
+            - containerPort: {{ .Values.backend.port }}
+          env:
+            - name: DB_HOST
+              value: {{ .Values.backend.dbHost | quote }}
+            - name: DB_PORT
+              value: "3306"
+            - name: DB_NAME
+              value: {{ .Values.mysql.database | quote }}
+            - name: DB_USER
+              value: {{ .Values.mysql.user | quote }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ipltb-secret
+                  key: MYSQL_PASSWORD
+          {{- if .Values.backend.healthPath }}
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.backend.healthPath }}
+              port: {{ .Values.backend.port }}
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.backend.healthPath }}
+              port: {{ .Values.backend.port }}
+            initialDelaySeconds: 20
+            periodSeconds: 15
+          {{- end }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ipltb-backend
+spec:
+  selector:
+    app: ipltb-backend
+  ports:
+    - port: {{ .Values.backend.port }}
+      targetPort: {{ .Values.backend.port }}

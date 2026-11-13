@@ -1,0 +1,52 @@
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.mysql.database }}-mysql-pvc
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: {{ .Values.mysql.storage }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.mysql.database }}-mysql
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: {{ .Values.mysql.database }}-mysql
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.mysql.database }}-mysql
+    spec:
+      containers:
+        - name: mysql
+          image: {{ .Values.mysql.image }}
+          ports:
+            - containerPort: 3306
+          envFrom:
+            - secretRef:
+                name: ipltb-secret
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ .Values.mysql.database }}-mysql-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.mysql.database }}-mysql
+spec:
+  selector:
+    app: {{ .Values.mysql.database }}-mysql
+  ports:
+    - port: 3306
