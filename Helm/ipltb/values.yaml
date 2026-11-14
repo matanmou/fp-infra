@@ -1,4 +1,4 @@
-replicas: 3
+replicas: 2
 namespace: ipltb-space
 image:
   name: matanmo93/ipltb
@@ -11,15 +11,17 @@ mysql:
   user: matanmo
   storage: 1Gi
 backend:
-  image: matanmo93/fp-backend:1.1
+  image: matanmo93/fp-backend:1.2
   port: 3000
   dbHost: ipldb-mysql
   healthPath: "" 
 frontend:
-  image: matanmo93/fp-frontend:1.1
+  image: matanmo93/fp-frontend:1.2.5
   port: 80
   backendUrl: http://ipltb-backend:3000
 jenkins:
   enabled: true
   serviceAccount: jenkins-deployer
   namespace: jenkins
+secret:
+  create: true
