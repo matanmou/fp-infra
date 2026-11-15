@@ -16,7 +16,7 @@ backend:
   dbHost: ipldb-mysql
   healthPath: "" 
 frontend:
-  image: matanmo93/fp-frontend:1.2.6
+  image: matanmo93/fp-frontend:1.2.7
   port: 80
   backendUrl: http://ipltb-backend:3000
 jenkins:
