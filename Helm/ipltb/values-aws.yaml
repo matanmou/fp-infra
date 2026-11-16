@@ -4,6 +4,8 @@ secret:
   create: false       # secret created manually with the RDS password
 backend:
   dbHost: ""          # set at install from terraform output
+  metrics:
+    enabled: true
 ingress:
   className: alb
   annotations:

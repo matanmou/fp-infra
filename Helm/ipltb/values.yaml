@@ -17,6 +17,8 @@ backend:
   port: 3000
   dbHost: ipldb-mysql
   healthPath: "" 
+  metrics:
+    enabled: false
 frontend:
   serviceName: ipltb-frontend
   image: matanmo93/fp-frontend:1.2.7

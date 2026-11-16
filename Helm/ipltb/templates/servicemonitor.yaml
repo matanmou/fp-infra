@@ -1,0 +1,14 @@
+{{- if .Values.backend.metrics.enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: ipltb-backend
+spec:
+  selector:
+    matchLabels:
+      app: ipltb-backend
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+{{- end }}
