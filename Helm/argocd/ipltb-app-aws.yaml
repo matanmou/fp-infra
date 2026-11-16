@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ipltb
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/matanmou/fp-infra
+    targetRevision: main
+    path: Helm/ipltb
+    helm:
+      releaseName: ipltb
+      valueFiles:
+        - values-aws.yaml
+      parameters:
+        - name: backend.dbHost
+          value: "ipltb-mysql.c36muyi0wtmc.eu-north-1.rds.amazonaws.com"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ipltb-space
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

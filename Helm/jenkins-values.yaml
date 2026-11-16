@@ -1,3 +1,0 @@
-serviceAccountAgent:
-  create: true
-  name: jenkins-deployer

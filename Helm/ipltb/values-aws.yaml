@@ -1,0 +1,11 @@
+mysql:
+  enabled: false      # using RDS instead
+secret:
+  create: false       # secret created manually with the RDS password
+backend:
+  dbHost: ""          # set at install from terraform output
+ingress:
+  className: alb
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
