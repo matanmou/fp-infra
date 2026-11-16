@@ -34,7 +34,7 @@ jobs:
 
       - uses: docker/build-push-action@v7
         with:
-          context: ./Docker/backend
+          context: ./infra/Docker/backend
           push: true
           tags: |
             matanmo93/fp-backend:latest
