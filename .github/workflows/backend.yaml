@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with:
-          repository: סatanmou/fp-infra
+          repository: matanmou/fp-infra
           ref: main
           path: infra
       - uses: docker/setup-buildx-action@v4
