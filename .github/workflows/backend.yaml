@@ -1,18 +1,24 @@
 
 name: Triggered from fp-app Backend CI/CD
 on:
-  repository_dispatch:
-    types: [backend-updated]
+  workflow_call:
+    inputs:
+      image:
+        required: true
+        type: string
+    secrets:
+      SERVER_SSH_KEY:      
+        required: true
+    outputs:
+      deployed-image:
+        description: "The image that was deployed"
+        value: ${{ jobs.deploy.outputs.image }}
 
 jobs:
-  get-trigger:
+  make-docker-image-to-dockerhub:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - run: echo "Got trigger from fp-app Backend CI/CD, starting backend deployment..."
-  make-docker-image:
-    runs-on: ubuntu-latest
-    needs: get-trigger
+    outputs:
+      image: ${{ inputs.image }}
     steps:
       - uses: actions/checkout@v6
 
