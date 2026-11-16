@@ -85,3 +85,26 @@ resource "aws_eks_access_policy_association" "console" {
 
   depends_on = [aws_eks_access_entry.console]
 }
+
+# ---------- EBS CSI driver (PersistentVolumes) ----------
+resource "aws_iam_role" "ebs_csi" {
+  name               = "${var.project_name}-ebs-csi-role"
+  assume_role_policy = data.aws_iam_policy_document.pod_identity_assume.json
+}
+
+resource "aws_iam_role_policy_attachment" "ebs_csi" {
+  role       = aws_iam_role.ebs_csi.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+}
+
+resource "aws_eks_addon" "ebs_csi" {
+  cluster_name = aws_eks_cluster.main.name
+  addon_name   = "aws-ebs-csi-driver"
+
+  pod_identity_association {
+    role_arn        = aws_iam_role.ebs_csi.arn
+    service_account = "ebs-csi-controller-sa"
+  }
+
+  depends_on = [aws_eks_addon.pod_identity_agent, aws_iam_role_policy_attachment.ebs_csi]
+}
