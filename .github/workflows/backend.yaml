@@ -1,0 +1,12 @@
+
+name: Triggered from fp-app Backend CI/CD
+on:
+  repository_dispatch:
+    types: [backend-updated]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - run: echo "Got trigger, sha=${{ github.event.client_payload.sha }}"
