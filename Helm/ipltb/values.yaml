@@ -13,7 +13,7 @@ mysql:
   storage: 1Gi
 backend:
   serviceName: ipltb-backend
-  image: matanmo93/fp-backend:1.3
+  image: matanmo93/fp-backend:1.4
   port: 3000
   dbHost: ipldb-mysql
   healthPath: "" 
