@@ -3,11 +3,11 @@ FROM node:22-alpine AS build
 
 WORKDIR /app
 RUN apk add --no-cache git
-ARG APP_REF=main
+ARG CACHEBUST=1
 RUN git clone --filter=blob:none --no-checkout \
       https://github.com/matanmou/fp-app.git . && \
     git sparse-checkout set backend && \
-    git checkout ${APP_REF}
+    git checkout
 
 WORKDIR /app/backend
 # install everything, compile, then drop devDependencies
