@@ -13,7 +13,7 @@ mysql:
   storage: 1Gi
 backend:
   serviceName: ipltb-backend
-  image: matanmo93/fp-backend:1.6
+  image: matanmo93/fp-backend:latest
   port: 3000
   dbHost: ipldb-mysql
   healthPath: "" 
@@ -21,7 +21,7 @@ backend:
     enabled: false
 frontend:
   serviceName: ipltb-frontend
-  image: matanmo93/fp-frontend:1.2.7
+  image: matanmo93/fp-frontend:latest
   port: 80
   backendUrl: http://ipltb-backend:3000
 secret:
